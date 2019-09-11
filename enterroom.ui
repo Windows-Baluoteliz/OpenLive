@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>wgEnterRoom</class>
+ <widget class="QWidget" name="wgEnterRoom">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	width:1366px;
+	height:768px;
+	image: url(:/uiresource/Open live-03.jpg);
+}</string>
+  </property>
+  <widget class="QLabel" name="lbChannel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>30</y>
+     <width>200</width>
+     <height>44</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>HelveticaNeue</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	width:200px;
+	height:44px;
+	image: url(:/uiresource/Group 31.png);
+	font-size:16px;
+	font-family:HelveticaNeue;
+	color:rgba(255,255,255,1);
+	line-height:18px;
+}</string>
+   </property>
+   <property name="text">
+    <string>baluoteliz</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>1024</x>
+     <y>37</y>
+     <width>264</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	width:264px;
+	height:32px;
+	image: url(:/uiresource/Groupparam.png);
+	border-radius:4px;
+	opacity:0.4;
+	font-size:12px;
+	font-family:HelveticaNeue;
+	color:rgba(238,238,238,1);
+	line-height:18px;
+}</string>
+   </property>
+   <property name="text">
+    <string>SD-RTN: 10000ms. Video: 15fps 640x480</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnExit">
+   <property name="geometry">
+    <rect>
+     <x>1298</x>
+     <y>36</y>
+     <width>32</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton:!hover {
+width:32px;
+height:32px;
+image: url(:/uiresource/icon-exit.png);
+border-image: url(:/uiresource/icon-exit.png);
+}
+
+QPushButton:hover {
+width:32px;
+height:32px;
+image: url(:/uiresource/icon-exit hover.png);
+border-image: url(:/uiresource/icon-exit hover.png);
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="rbCamera">
+   <property name="geometry">
+    <rect>
+     <x>624</x>
+     <y>688</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox::indicator{
+	width:50px;
+	height:50px;
+}
+
+QCheckBox:indicator:checked:!hover {
+	image: url(:/uiresource/icon-camera off.png);
+}
+QCheckBox:indicator:checked:hover {
+	image: url(:/uiresource/icon-camera off hover.png);
+}
+
+QCheckBox:indicator:unchecked:!hover {
+	image: url(:/uiresource/icon-camera.png);
+}
+QCheckBox:indicator:unchecked:hover {
+	image: url(:/uiresource/icon-camera hover.png);
+}</string>
+   </property>
+   <property name="text">
+    <string>RadioButton</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="rbMic">
+   <property name="geometry">
+    <rect>
+     <x>693</x>
+     <y>688</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox::indicator{
+	width:50px;
+	height:50px;
+}
+
+QCheckBox:indicator:checked:!hover {
+	image: url(:/uiresource/icon-microphone off.png);
+}
+QCheckBox:indicator:checked:hover {
+	image: url(:/uiresource/icon-microphone off hover.png);
+}
+
+QCheckBox:indicator:unchecked:!hover {
+	image: url(:/uiresource/icon-microphone.png);
+}
+QCheckBox:indicator:unchecked:hover {
+	image: url(:/uiresource/icon-microphone hover.png);
+}</string>
+   </property>
+   <property name="text">
+    <string>RadioButton</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
