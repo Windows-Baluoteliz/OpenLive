@@ -38,15 +38,13 @@ public:
         wgEnterRoom->setStyleSheet(QLatin1String("QWidget {\n"
 "	width:1366px;\n"
 "	height:768px;\n"
-"	image: url(:/uiresource/Open live-03.jpg);\n"
+"	background-color:#666666\n"
 "}"));
         lbChannel = new QLabel(wgEnterRoom);
         lbChannel->setObjectName(QStringLiteral("lbChannel"));
         lbChannel->setGeometry(QRect(30, 30, 200, 44));
         QFont font;
         font.setFamily(QStringLiteral("HelveticaNeue"));
-        font.setBold(true);
-        font.setWeight(75);
         lbChannel->setFont(font);
         lbChannel->setStyleSheet(QLatin1String("QLabel {\n"
 "	width:200px;\n"
@@ -64,6 +62,7 @@ public:
         label->setStyleSheet(QLatin1String("QLabel {\n"
 "	width:264px;\n"
 "	height:32px;\n"
+"	\n"
 "	image: url(:/uiresource/Groupparam.png);\n"
 "	border-radius:4px;\n"
 "	opacity:0.4;\n"

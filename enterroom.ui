@@ -17,7 +17,7 @@
    <string notr="true">QWidget {
 	width:1366px;
 	height:768px;
-	image: url(:/uiresource/Open live-03.jpg);
+	background-color:#666666
 }</string>
   </property>
   <widget class="QLabel" name="lbChannel">
@@ -33,8 +33,6 @@
     <font>
      <family>HelveticaNeue</family>
      <pointsize>-1</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
@@ -68,6 +66,7 @@
     <string notr="true">QLabel {
 	width:264px;
 	height:32px;
+	
 	image: url(:/uiresource/Groupparam.png);
 	border-radius:4px;
 	opacity:0.4;

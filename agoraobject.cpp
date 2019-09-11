@@ -57,7 +57,7 @@ CAgoraObject::CAgoraObject():
 {
     agora::rtc::RtcEngineContext context;
     context.eventHandler = m_eventHandler.get();
-    context.appId = "aab8b8f5a8cd4469a63042fcfafe7063";//Specify your APP ID here
+    context.appId = APPID;
     if (*context.appId == '\0')
     {
         QMessageBox::critical(nullptr, ("AgoraOpenLive"),
@@ -71,20 +71,15 @@ CAgoraObject::~CAgoraObject()
 
 }
 
-int CAgoraObject::joinChannel(const QString& key, const QString& channel, const QString& uid)
+int CAgoraObject::joinChannel(const QString& key, const QString& channel, uint uid)
 {
     if (channel.isEmpty()) {
         QMessageBox::warning(nullptr,("AgoraHighSound"),("channelname is empty"));
         return -1;
     }
 
-    if(uid.isEmpty()) {
-        QMessageBox::warning(nullptr,("AgoraHighSound"),("mobile uid is empty ,it must at least 3 characters."));
-        return -1;
-    }
-	
     m_rtcEngine->startPreview();
-    int r = m_rtcEngine->joinChannel(key.toUtf8().data(), channel.toUtf8().data(), nullptr, uid.toInt());
+    int r = m_rtcEngine->joinChannel(key.toUtf8().data(), channel.toUtf8().data(), nullptr, uid);
 
     return r;
 }
@@ -99,6 +94,41 @@ int CAgoraObject::muteLocalAudioStream(bool muted)
 {
     RtcEngineParameters rep(*m_rtcEngine);
     return rep.muteLocalAudioStream(muted);
+}
+
+BOOL CAgoraObject::LocalVideoPreview(HWND hVideoWnd, BOOL bPreviewOn, RENDER_MODE_TYPE renderType/* = RENDER_MODE_TYPE::RENDER_MODE_FIT*/)
+{
+    int nRet = 0;
+
+    if (bPreviewOn) {
+        VideoCanvas vc;
+
+        vc.uid = 0;
+        vc.view = hVideoWnd;
+        vc.renderMode = renderType;
+
+        m_rtcEngine->setupLocalVideo(vc);
+        nRet = m_rtcEngine->startPreview();
+    }
+    else
+        nRet = m_rtcEngine->stopPreview();
+
+    return nRet == 0 ? TRUE : FALSE;
+}
+
+BOOL CAgoraObject::RemoteVideoRender(uid_t uid, HWND hVideoWnd, RENDER_MODE_TYPE renderType/* = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN*/)
+{
+    int nRet = 0;
+
+    VideoCanvas vc;
+
+    vc.uid = uid;
+    vc.view = hVideoWnd;
+    vc.renderMode = renderType;
+
+    m_rtcEngine->setupRemoteVideo(vc);
+
+    return nRet == 0 ? TRUE : FALSE;
 }
 
 int CAgoraObject::enableVideo(bool enabled)

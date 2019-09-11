@@ -3,7 +3,9 @@
 
 #include <Memory>
 #include <mutex>
-#define APPID ""
+
+//Specify your APP ID here
+#define APPID "aab8b8f5a8cd4469a63042fcfafe7063"
 
 #include <QString>
 #include <QVariant>
@@ -17,9 +19,11 @@ class CAgoraObject
 {
 public:
 
-    int joinChannel(const QString& key, const QString& channel, const QString& uid);
+    int joinChannel(const QString& key, const QString& channel, uint uid);
     int leaveChannel();
     int muteLocalAudioStream(bool muted);
+    BOOL LocalVideoPreview(HWND hVideoWnd, BOOL bPreviewOn, RENDER_MODE_TYPE renderType = RENDER_MODE_TYPE::RENDER_MODE_FIT);
+    BOOL RemoteVideoRender(uid_t uid, HWND hVideoWnd, RENDER_MODE_TYPE renderType = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN);
 
     int enableVideo(bool enabled);
     int enableAudio(bool enabled);

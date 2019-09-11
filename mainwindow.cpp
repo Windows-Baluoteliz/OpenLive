@@ -133,14 +133,12 @@ void MainWindow::OnClickJoin()
         return;
     }
 
-   // std::unique_ptr<EnterRoom> m_uper(new EnterRoom);
-   // EnterRoom* receive = m_uper.get();
-    //connect(this,SIGNAL(joinchannel(QString,uint)),receive,SLOT(joinchannel(QString,uint)));
-    //emit joinchannel(m_strRoomId,0);
-
+    m_uper.reset(new EnterRoom);
+    EnterRoom* receive = m_uper.get();
+    connect(this,SIGNAL(joinchannel(QString,uint)),receive,SLOT(joinchannel(QString,uint)));
+    emit joinchannel(m_strRoomId,0);
     this->hide();
-
-}
+ }
 
 void MainWindow::OnlineEditChanged()
 {
