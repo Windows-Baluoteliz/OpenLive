@@ -18,7 +18,7 @@ public:
     explicit roomsettings(QMainWindow* pLastWnd,QWidget *parent = 0);
     ~roomsettings();
 
-    void initWindow();
+    void initWindow(const QString& qsChannel);
 
 private slots:
     void OnClickLastPage();
@@ -27,11 +27,8 @@ private slots:
     void OnCbVPIndexChanged();
 
     void on_cbVideoProfile_activated(const QString &arg1);
-
     void on_cbRecordDevices_activated(int index);
-
     void on_cbVideoDevices_activated(int index);
-
     void on_cbPlayDevices_activated(int index);
 
 protected:

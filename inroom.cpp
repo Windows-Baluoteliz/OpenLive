@@ -25,6 +25,8 @@ void InRoom::mousePressEvent(QMouseEvent *e)
            m_mousePosition.y() < lnTitleHeight)
             m_bMousePressed = true;
     }
+
+    QApplication::sendEvent(m_uper.get(),e);
 }
 
 void InRoom::mouseMoveEvent(QMouseEvent *e)
@@ -34,24 +36,38 @@ void InRoom::mouseMoveEvent(QMouseEvent *e)
         move(movePos);
         e->accept();
     }
+
+
+    QApplication::sendEvent(m_uper.get(),e);
 }
 
 void InRoom::mouseReleaseEvent(QMouseEvent *e)
 {
    m_bMousePressed = false;
+
+   QApplication::sendEvent(m_uper.get(),e);
 }
 
-void InRoom::joinchannel(const QString& qsChannel,uint uid)
+void InRoom::joinchannel(QMainWindow* pMainWnd,const QString& qsChannel,uint uid)
 {
     qDebug(__FUNCTION__);
     this->show();
 
     CAgoraObject::getInstance()->LocalVideoPreview((HWND)winId(),TRUE);
     CAgoraObject::getInstance()->joinChannel("",qsChannel,uid);
+
+    m_uper.reset(new EnterRoom);
+    connect(m_uper.get(),SIGNAL(sender_updateVideo()),this,SLOT(receive_updateVideo));
+    m_uper->joinchannel(pMainWnd,qsChannel,uid);
 }
 
 void InRoom::leavechannel()
 {
     qDebug(__FUNCTION__);
     CAgoraObject::getInstance()->leaveChannel();
+}
+
+void InRoom::receive_updateVideo()
+{
+    int i= 0;
 }

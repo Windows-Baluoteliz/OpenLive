@@ -37,6 +37,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initWindow()
 {
+    m_strRoomId.clear();
     QString strDir = QCoreApplication::applicationDirPath();
     strDir.append("\\AgoraSDK.log");
     CAgoraObject::getInstance()->setLogPath(strDir);
@@ -50,7 +51,7 @@ void MainWindow::initWindow()
 void MainWindow::OnClickSettings()
 {
     this->hide();
-    m_upRs->initWindow();
+    m_upRs->initWindow(m_strRoomId);
     m_upRs->show();
 }
 
@@ -135,19 +136,17 @@ void MainWindow::OnClickJoin()
 
     m_upIr.reset(new InRoom);
     InRoom* receive1 = m_upIr.get();
-    connect(this,SIGNAL(joinchannel(QString,uint)),receive1,SLOT(joinchannel(QString,uint)));
-    emit joinchannel(m_strRoomId,0);
-
-    m_uper.reset(new EnterRoom);
-    EnterRoom* receive = m_uper.get();
-    connect(this,SIGNAL(joinchannel(QString,uint)),receive,SLOT(joinchannel(QString,uint)));
-    emit joinchannel(m_strRoomId,0);
+    connect(this,SIGNAL(joinchannel(QMainWindow*,QString,uint)),receive1,SLOT(joinchannel(QMainWindow*,QString,uint)));
+    emit joinchannel(this,m_strRoomId,0);
 
     this->hide();
  }
 
 void MainWindow::OnlineEditChanged()
 {
+    m_strRoomId = ui->leditRoomId->text();
+    m_strRoomId = m_strRoomId.simplified();
+    gAgoraConfig.setChannelName(m_strRoomId);
 }
 
 void MainWindow::OnlineEditEnter()
@@ -179,4 +178,12 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
    m_bMousePressed = false;
+}
+
+void MainWindow::receive_exitChannel()
+{
+    qDebug(__FUNCTION__);
+    CAgoraObject::getInstance()->leaveChannel();
+    m_upIr->hide();
+    this->show();
 }

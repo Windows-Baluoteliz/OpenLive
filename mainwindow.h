@@ -33,8 +33,10 @@ private slots:
     void OnlineEditChanged();
     void OnlineEditEnter();
 
+    void receive_exitChannel();
+
 signals:
-    void joinchannel(const QString &qsChannel,uint uid);
+    void joinchannel(QMainWindow* pMainWnd,const QString &qsChannel,uint uid);
     void leavechannel();
 
 protected:
@@ -54,7 +56,6 @@ private:
     Ui::MainWindow *ui;
     QString     m_strRoomId;
     std::unique_ptr<roomsettings> m_upRs;
-    std::unique_ptr<EnterRoom> m_uper;
     std::unique_ptr<InRoom> m_upIr;
 };
 

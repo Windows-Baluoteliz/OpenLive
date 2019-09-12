@@ -46,5 +46,11 @@
         <file>uiresource/icon-microphone off hover.png</file>
         <file>uiresource/icon-microphone off.png</file>
         <file>uiresource/icon-microphone.png</file>
+        <file>uiresource/allmute remote.png</file>
+        <file>uiresource/allmute.png</file>
+        <file>uiresource/count.png</file>
+        <file>uiresource/mutevideo remote.png</file>
+        <file>uiresource/mutevideo.png</file>
+        <file>uiresource/remoteuid.png</file>
     </qresource>
 </RCC>

@@ -14,34 +14,64 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-color:#999999;</string>
+   </property>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>79</x>
-      <y>440</y>
-      <width>111</width>
-      <height>80</height>
+      <x>30</x>
+      <y>94</y>
+      <width>200</width>
+      <height>150</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/uiresource/allmute remote.png);
+border-color: #D8D8D8;
+border-size:1px;</string>
     </property>
    </widget>
    <widget class="QWidget" name="widget_2" native="true">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>540</y>
-      <width>120</width>
-      <height>80</height>
+      <x>30</x>
+      <y>254</y>
+      <width>200</width>
+      <height>150</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/uiresource/allmute remote.png);</string>
     </property>
    </widget>
    <widget class="QWidget" name="widget_3" native="true">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>640</y>
-      <width>121</width>
-      <height>71</height>
+      <x>30</x>
+      <y>414</y>
+      <width>200</width>
+      <height>150</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/uiresource/allmute remote.png);</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbMicDefault">
+    <property name="geometry">
+     <rect>
+      <x>543</x>
+      <y>228</y>
+      <width>280</width>
+      <height>280</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/uiresource/allmute.png);</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

@@ -6,7 +6,8 @@
 
  EnterRoom::EnterRoom(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::wgEnterRoom)
+    ui(new Ui::wgEnterRoom),
+    m_pLastWnd(Q_NULLPTR)
 {
     ui->setupUi(this);
 
@@ -44,32 +45,51 @@ void EnterRoom::mouseReleaseEvent(QMouseEvent *e)
    m_bMousePressed = false;
 }
 
-void EnterRoom::joinchannel(const QString& qsChannel,uint uid)
+void EnterRoom::joinchannel(QMainWindow* pLastWnd,const QString& qsChannel,uint uid)
 {
     qDebug(__FUNCTION__);
+    m_pLastWnd = pLastWnd;
+    ui->lbChannel->setText(qsChannel);
     this->show();
-
-    //CAgoraObject::getInstance()->LocalVideoPreview((HWND)ui->wgVideo->winId(),TRUE);
-    //CAgoraObject::getInstance()->joinChannel("",qsChannel,uid);
 }
 
 void EnterRoom::leavechannel()
 {
     qDebug(__FUNCTION__);
-    CAgoraObject::getInstance()->leaveChannel();
 }
 
-void EnterRoom::receive_mousePressEvent(QMouseEvent *e)
+void EnterRoom::setChannelName(const QString& qsChannel,uint uid)
 {
-
+    QString qsParam(qsChannel);
+    qsParam.append(" ");
+    qsParam.append(QString::number(uid));
+    ui->lbChannel->setText(qsParam);
 }
 
-void EnterRoom::receive_mouseMoveEvent(QMouseEvent *e)
+void EnterRoom::setParam(const QString& qsParam)
 {
-
+    ui->lbParam->setText(qsParam);
 }
 
-void EnterRoom::receive_mouseReleaseEvent(QMouseEvent *e)
+void EnterRoom::on_btnExit_clicked()
 {
+    connect(this,SIGNAL(sender_exitChannel()),m_pLastWnd,SLOT(receive_exitChannel()));
+    emit sender_exitChannel();
+    this->hide();
+}
 
+void EnterRoom::on_rbCamera_stateChanged(int arg1)
+{
+    if(arg1 == Qt::Unchecked)
+        CAgoraObject::getInstance()->MuteLocalVideo(FALSE);
+    else if(arg1 == Qt::Checked)
+        CAgoraObject::getInstance()->MuteLocalVideo(TRUE);
+}
+
+void EnterRoom::on_rbMic_stateChanged(int arg1)
+{
+    if(arg1 == Qt::Unchecked)
+        CAgoraObject::getInstance()->MuteLocalAudio(FALSE);
+    else if(arg1 == Qt::Checked)
+        CAgoraObject::getInstance()->MuteLocalAudio(TRUE);
 }

@@ -27,6 +27,8 @@ public:
 
     int enableVideo(bool enabled);
     int enableAudio(bool enabled);
+    BOOL MuteLocalVideo(BOOL bMute);
+    BOOL MuteLocalAudio(BOOL bMute);
 
     BOOL setLogPath(const QString &strDir);
     BOOL SetChannelProfile(CHANNEL_PROFILE_TYPE channelType);

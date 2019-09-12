@@ -1,7 +1,9 @@
 #ifndef INROOM_H
 #define INROOM_H
 
+#include <Memory>
 #include <QMainWindow>
+#include "enterroom.h"
 
 namespace Ui {
 class InRoom;
@@ -23,21 +25,17 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
 
-signals:
-    void send_mousePressEvent(QMouseEvent *e);
-    void send_mouseMoveEvent(QMouseEvent *e);
-    void send_mouseReleaseEvent(QMouseEvent *e);
-
 public slots:
-    void joinchannel(const QString& qsChannel,uint uid);
+    void joinchannel(QMainWindow* pMainWnd,const QString& qsChannel,uint uid);
     void leavechannel();
+    void receive_updateVideo();
 
 private:
     const int lnTitleWidth = 1366;
     const int lnTitleHeight = 30;
     QPoint m_mousePosition;
     bool   m_bMousePressed;
-
+    std::unique_ptr<EnterRoom> m_uper;
 };
 
 #endif // INROOM_H

@@ -36,8 +36,9 @@ roomsettings::~roomsettings()
     delete ui;
 }
 
-void roomsettings::initWindow()
+void roomsettings::initWindow(const QString& qsChannel)
 {
+    ui->lbName->setText(qsChannel);
     m_bEnableAudio = gAgoraConfig.getEnableAudio();
     if(!m_bEnableAudio) {
         QString str = "QPushButton:!hover {\

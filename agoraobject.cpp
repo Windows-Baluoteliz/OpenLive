@@ -11,32 +11,33 @@ public:
     {}
     virtual void onVideoStopped() override
     {
-        //emit m_engine.videoStopped();
+        emit m_engine.videoStopped();
     }
     virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed) override
     {
-       // emit m_engine.joinedChannelSuccess(channel, uid, elapsed);
+       emit m_engine.joinedChannelSuccess(channel, uid, elapsed);
     }
     virtual void onUserJoined(uid_t uid, int elapsed) override
     {
-        //emit m_engine.userJoined(uid, elapsed);
+        emit m_engine.userJoined(uid, elapsed);
     }
     virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) override
     {
-       // emit m_engine.userOffline(uid, reason);
+        emit m_engine.userOffline(uid, reason);
     }
     virtual void onFirstLocalVideoFrame(int width, int height, int elapsed) override
     {
-        //emit m_engine.firstLocalVideoFrame(width, height, elapsed);
+        emit m_engine.firstLocalVideoFrame(width, height, elapsed);
     }
     virtual void onFirstRemoteVideoDecoded(uid_t uid, int width, int height, int elapsed) override
     {
-        //emit m_engine.firstRemoteVideoDecoded(uid, width, height, elapsed);
+        emit m_engine.firstRemoteVideoDecoded(uid, width, height, elapsed);
     }
     virtual void onFirstRemoteVideoFrame(uid_t uid, int width, int height, int elapsed) override
     {
-       // emit m_engine.firstRemoteVideoFrameDrawn(uid, width, height, elapsed);
+       emit m_engine.firstRemoteVideoFrameDrawn(uid, width, height, elapsed);
     }
+
 };
 
 CAgoraObject* CAgoraObject::getInstance()
@@ -348,4 +349,24 @@ BOOL CAgoraObject::setVideoIndex(int nIndex)
     res = spCollection->setDevice(guid);
 
     return res == 0 ? TRUE : FALSE;
+}
+
+BOOL CAgoraObject::MuteLocalVideo(BOOL bMute)
+{
+     int nRet = 0;
+
+    RtcEngineParameters rep(*m_rtcEngine);
+    nRet = rep.enableLocalVideo(!bMute);
+
+    return nRet == 0 ? TRUE : FALSE;
+}
+
+BOOL CAgoraObject::MuteLocalAudio(BOOL bMute)
+{
+    int nRet = 0;
+
+    RtcEngineParameters rep(*m_rtcEngine);
+    nRet = m_rtcEngine->enableLocalAudio(!bMute);
+
+    return nRet == 0 ? TRUE : FALSE;
 }
