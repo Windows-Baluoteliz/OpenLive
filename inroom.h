@@ -1,32 +1,36 @@
-#ifndef ENTERROOM_H
-#define ENTERROOM_H
+#ifndef INROOM_H
+#define INROOM_H
 
-#include <QWidget>
+#include <QMainWindow>
 
 namespace Ui {
-class wgEnterRoom;
+class InRoom;
 }
 
-class EnterRoom : public QWidget
+class InRoom : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit EnterRoom(QWidget *parent = 0);
-    ~EnterRoom();
+    explicit InRoom(QWidget *parent = 0);
+    ~InRoom();
+
+private:
+    Ui::InRoom *ui;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
 
+signals:
+    void send_mousePressEvent(QMouseEvent *e);
+    void send_mouseMoveEvent(QMouseEvent *e);
+    void send_mouseReleaseEvent(QMouseEvent *e);
+
 public slots:
     void joinchannel(const QString& qsChannel,uint uid);
     void leavechannel();
-
-    void receive_mousePressEvent(QMouseEvent *e);
-    void receive_mouseMoveEvent(QMouseEvent *e);
-    void receive_mouseReleaseEvent(QMouseEvent *e);
 
 private:
     const int lnTitleWidth = 1366;
@@ -34,8 +38,6 @@ private:
     QPoint m_mousePosition;
     bool   m_bMousePressed;
 
-private:
-    Ui::wgEnterRoom *ui;
 };
 
-#endif // ENTERROOM_H
+#endif // INROOM_H

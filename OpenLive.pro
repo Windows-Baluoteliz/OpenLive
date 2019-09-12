@@ -17,18 +17,21 @@ SOURCES += main.cpp\
     agoraconfig.cpp \
     roomsettings.cpp \
     agoraobject.cpp \
-    enterroom.cpp
+    enterroom.cpp \
+    inroom.cpp
 
 HEADERS  += mainwindow.h \
     stdafx.h \
     agoraconfig.h \
     roomsettings.h \
     agoraobject.h \
-    enterroom.h
+    enterroom.h \
+    inroom.h
 
 FORMS    += mainwindow.ui \
     roomsettings.ui \
-    enterroom.ui
+    enterroom.ui \
+    inroom.ui
 
 RC_FILE = openlive.rc
 

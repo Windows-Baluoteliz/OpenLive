@@ -6,6 +6,7 @@ class roomsettings;
 #include <QMainWindow>
 #include "roomsettings.h"
 #include "enterroom.h"
+#include "inroom.h"
 
 namespace Ui {
 class MainWindow;
@@ -54,6 +55,7 @@ private:
     QString     m_strRoomId;
     std::unique_ptr<roomsettings> m_upRs;
     std::unique_ptr<EnterRoom> m_uper;
+    std::unique_ptr<InRoom> m_upIr;
 };
 
 #endif // MAINWINDOW_H

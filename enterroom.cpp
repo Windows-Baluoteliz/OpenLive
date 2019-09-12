@@ -2,6 +2,7 @@
 #include "enterroom.h"
 #include "ui_enterroom.h"
 #include "agoraobject.h"
+#include "qgraphicseffect.h"
 
  EnterRoom::EnterRoom(QWidget *parent) :
     QWidget(parent),
@@ -9,8 +10,9 @@
 {
     ui->setupUi(this);
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-    //this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
+                         Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    this->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 EnterRoom::~EnterRoom()
@@ -47,12 +49,27 @@ void EnterRoom::joinchannel(const QString& qsChannel,uint uid)
     qDebug(__FUNCTION__);
     this->show();
 
-    CAgoraObject::getInstance()->LocalVideoPreview((HWND)winId(),TRUE);
-    CAgoraObject::getInstance()->joinChannel("",qsChannel,uid);
+    //CAgoraObject::getInstance()->LocalVideoPreview((HWND)ui->wgVideo->winId(),TRUE);
+    //CAgoraObject::getInstance()->joinChannel("",qsChannel,uid);
 }
 
 void EnterRoom::leavechannel()
 {
     qDebug(__FUNCTION__);
     CAgoraObject::getInstance()->leaveChannel();
+}
+
+void EnterRoom::receive_mousePressEvent(QMouseEvent *e)
+{
+
+}
+
+void EnterRoom::receive_mouseMoveEvent(QMouseEvent *e)
+{
+
+}
+
+void EnterRoom::receive_mouseReleaseEvent(QMouseEvent *e)
+{
+
 }
