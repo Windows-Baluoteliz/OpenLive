@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "agoraobject.h"
 #include "inroom.h"
 #include "ui_inroom.h"
-#include "agoraobject.h"
 
 InRoom::InRoom(QWidget *parent) :
     QMainWindow(parent),
@@ -10,6 +10,25 @@ InRoom::InRoom(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
     //this->setAttribute(Qt::WA_TranslucentBackground);
+
+    CAgoraObject* pObject = CAgoraObject::getInstance();
+    connect(pObject,SIGNAL(sender_videoStopped()),this,SLOT(receive_videoStopped()));
+    connect(pObject,SIGNAL(sender_joinedChannelSuccess(const char*,uid_t,int)),
+            this,SLOT(receive_joinedChannelSuccess(const char*,uid_t,int)));
+    connect(pObject,SIGNAL(sender_userJoined(uid_t,int)),
+            this,SLOT(receive_userJoined(uid_t,int)));
+    connect(pObject,SIGNAL(sender_userOffline(uid_t,USER_OFFLINE_REASON_TYPE)),
+            this,SLOT(receive_userOffline(uid_t,USER_OFFLINE_REASON_TYPE)));
+    connect(pObject,SIGNAL(sender_firstLocalVideoFrame(int,int,int)),
+            this,SLOT(receive_firstLocalVideoFrame(int,int,int)));
+    connect(pObject,SIGNAL(sender_firstRemoteVideoDecoded(uid_t,int,int,int)),
+            this,SLOT(receive_firstRemoteVideoDecoded(uid_t,int,int,int)));
+    connect(pObject,SIGNAL(sender_firstRemoteVideoFrameDrawn(uid_t,int,int,int)),
+            this,SLOT(receive_firstRemoteVideoFrameDrawn(uid_t,int,int,int)));
+    connect(pObject,SIGNAL(sender_localVideoStats(LocalVideoStats)),
+            this,SLOT(receive_localVideoStats(LocalVideoStats)));
+    connect(pObject,SIGNAL(sender_remoteVideoStats(RemoteVideoStats)),
+            this,SLOT(receive_remoteVideoStats(RemoteVideoStats)));
 }
 
 InRoom::~InRoom()
@@ -69,5 +88,50 @@ void InRoom::leavechannel()
 
 void InRoom::receive_updateVideo()
 {
-    int i= 0;
+
+}
+
+void InRoom::receive_videoStopped()
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_joinedChannelSuccess(const char* channel, uid_t uid, int elapsed)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_userJoined(uid_t uid, int elapsed)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_userOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_firstLocalVideoFrame(int width, int height, int elapsed)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_firstRemoteVideoDecoded(uid_t uid, int width, int height, int elapsed)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_firstRemoteVideoFrameDrawn(uid_t uid, int width, int height, int elapsed)
+{
+    qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_localVideoStats(const LocalVideoStats &stats)
+{
+   qDebug(__FUNCTION__);
+}
+
+void InRoom::receive_remoteVideoStats(const RemoteVideoStats &stats)
+{
+   qDebug(__FUNCTION__);
 }

@@ -15,8 +15,9 @@ using namespace agora::rtc;
 
 typedef QMap<QString,QString> qSSMap;
 
-class CAgoraObject
+class CAgoraObject:public QObject
 {
+    Q_OBJECT
 public:
 
     int joinChannel(const QString& key, const QString& channel, uint uid);
@@ -48,13 +49,24 @@ public:
     BOOL setPlayoutIndex(int nIndex);
     BOOL setVideoIndex(int nIndex);
 
+signals:
+    void sender_videoStopped();
+    void sender_joinedChannelSuccess(const char* channel, uid_t uid, int elapsed);
+    void sender_userJoined(uid_t uid, int elapsed);
+    void sender_userOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason);
+    void sender_firstLocalVideoFrame(int width, int height, int elapsed);
+    void sender_firstRemoteVideoDecoded(uid_t uid, int width, int height, int elapsed);
+    void sender_firstRemoteVideoFrameDrawn(uid_t uid, int width, int height, int elapsed);
+    void sender_localVideoStats(const LocalVideoStats &stats);
+    void sender_remoteVideoStats(const RemoteVideoStats &stats);
+
 public:
-    static CAgoraObject* getInstance();
+    static CAgoraObject* getInstance(QObject *parent = 0);
     static CAgoraObject* m_pInstance;
     static std::mutex    m_mutex;
 
 private:
-    explicit CAgoraObject();
+    explicit CAgoraObject(QObject *parent = 0);
     ~CAgoraObject();
 
     agora::rtc::IRtcEngine* m_rtcEngine;

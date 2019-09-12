@@ -4,47 +4,54 @@
 
 class AgoraRtcEngineEvent : public agora::rtc::IRtcEngineEventHandler
 {
-    CAgoraObject& m_engine;
+    CAgoraObject& m_pInstance;
 public:
     AgoraRtcEngineEvent(CAgoraObject& engine)
-        :m_engine(engine)
+        :m_pInstance(engine)
     {}
     virtual void onVideoStopped() override
     {
-        emit m_engine.videoStopped();
+        emit m_pInstance.sender_videoStopped();
     }
     virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed) override
     {
-       emit m_engine.joinedChannelSuccess(channel, uid, elapsed);
+       emit m_pInstance.sender_joinedChannelSuccess(channel, uid, elapsed);
     }
     virtual void onUserJoined(uid_t uid, int elapsed) override
     {
-        emit m_engine.userJoined(uid, elapsed);
+        emit m_pInstance.sender_userJoined(uid, elapsed);
     }
     virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) override
     {
-        emit m_engine.userOffline(uid, reason);
+        emit m_pInstance.sender_userOffline(uid, reason);
     }
     virtual void onFirstLocalVideoFrame(int width, int height, int elapsed) override
     {
-        emit m_engine.firstLocalVideoFrame(width, height, elapsed);
+        emit m_pInstance.sender_firstLocalVideoFrame(width, height, elapsed);
     }
     virtual void onFirstRemoteVideoDecoded(uid_t uid, int width, int height, int elapsed) override
     {
-        emit m_engine.firstRemoteVideoDecoded(uid, width, height, elapsed);
+        emit m_pInstance.sender_firstRemoteVideoDecoded(uid, width, height, elapsed);
     }
     virtual void onFirstRemoteVideoFrame(uid_t uid, int width, int height, int elapsed) override
     {
-       emit m_engine.firstRemoteVideoFrameDrawn(uid, width, height, elapsed);
+       emit m_pInstance.sender_firstRemoteVideoFrameDrawn(uid, width, height, elapsed);
     }
-
+    virtual void onLocalVideoStats(const LocalVideoStats &stats) override
+    {
+        emit m_pInstance.sender_localVideoStats(stats);
+    }
+    virtual void onRemoteVideoStats(const RemoteVideoStats &stats) override
+    {
+        emit m_pInstance.sender_remoteVideoStats(stats);
+    }
 };
 
-CAgoraObject* CAgoraObject::getInstance()
+CAgoraObject* CAgoraObject::getInstance(QObject *parent)
 {
     std::lock_guard<std::mutex> autoLock(m_mutex);
     if(nullptr == m_pInstance)
-        m_pInstance = new CAgoraObject;
+        m_pInstance = new CAgoraObject(parent);
 
     return m_pInstance;
 }
@@ -52,7 +59,8 @@ CAgoraObject* CAgoraObject::getInstance()
 CAgoraObject* CAgoraObject::m_pInstance = nullptr;
 std::mutex  CAgoraObject::m_mutex;
 
-CAgoraObject::CAgoraObject():
+CAgoraObject::CAgoraObject(QObject *parent):
+    QObject(parent),
     m_rtcEngine(createAgoraRtcEngine()),
     m_eventHandler(new AgoraRtcEngineEvent(*this))
 {
@@ -69,7 +77,8 @@ CAgoraObject::CAgoraObject():
 
 CAgoraObject::~CAgoraObject()
 {
-
+    if(m_rtcEngine)
+        m_rtcEngine->release();
 }
 
 int CAgoraObject::joinChannel(const QString& key, const QString& channel, uint uid)
