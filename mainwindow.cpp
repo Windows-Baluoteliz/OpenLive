@@ -183,7 +183,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 void MainWindow::receive_exitChannel()
 {
     qDebug(__FUNCTION__);
-    CAgoraObject::getInstance()->leaveChannel();
-    m_upIr->hide();
+    m_upIr->leavechannel();
     this->show();
 }

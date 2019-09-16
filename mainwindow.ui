@@ -293,7 +293,7 @@ color:#44A2FC
 }</string>
     </property>
     <property name="text">
-     <string>我是主播</string>
+     <string>Host</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -358,7 +358,10 @@ color:#999999
 }</string>
     </property>
     <property name="text">
-     <string>我是观众</string>
+     <string>Audience</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QRadioButton" name="rbguide">

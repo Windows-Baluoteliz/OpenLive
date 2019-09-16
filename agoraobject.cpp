@@ -9,16 +9,18 @@ public:
     AgoraRtcEngineEvent(CAgoraObject& engine)
         :m_pInstance(engine)
     {}
+
     virtual void onVideoStopped() override
     {
         emit m_pInstance.sender_videoStopped();
     }
     virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed) override
     {
-       emit m_pInstance.sender_joinedChannelSuccess(channel, uid, elapsed);
+       emit m_pInstance.sender_joinedChannelSuccess(QString(channel),uid,elapsed);
     }
     virtual void onUserJoined(uid_t uid, int elapsed) override
     {
+        qDebug("%s %u",__FUNCTION__,uid);
         emit m_pInstance.sender_userJoined(uid, elapsed);
     }
     virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) override
@@ -44,6 +46,10 @@ public:
     virtual void onRemoteVideoStats(const RemoteVideoStats &stats) override
     {
         emit m_pInstance.sender_remoteVideoStats(stats);
+    }
+    virtual void onRtcStats(const RtcStats &stats)
+    {
+        emit m_pInstance.sender_rtcStats(stats);
     }
 };
 

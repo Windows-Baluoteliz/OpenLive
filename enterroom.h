@@ -19,13 +19,21 @@ public:
     void joinchannel(QMainWindow* pLastWnd,const QString& qsChannel,uint uid);
     void leavechannel();
 
-    void setChannelName(const QString& qsChannel,uint uid);
+    void setChannelName(const QString& qsChannelInfo);
     void setParam(const QString& qsParam);
+
+    void setAllRAtt(int nRCount);
+    void setR1(unsigned int uid);
+    void setR2(unsigned int uid);
+    void setR3(unsigned int uid);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
+
+    virtual void focusInEvent(QFocusEvent *event);
+    virtual void focusOutEvent(QFocusEvent *event);
 
 signals:
     void sender_exitChannel();
@@ -34,8 +42,8 @@ signals:
 private slots:
     void on_btnExit_clicked();
     void on_rbCamera_stateChanged(int arg1);
-
     void on_rbMic_stateChanged(int arg1);
+    void on_mouseclicked();
 
 private:
     const int lnTitleWidth = 1366;
@@ -46,6 +54,9 @@ private:
 private:
     Ui::wgEnterRoom *ui;
     QMainWindow* m_pLastWnd;
+    unsigned int   m_uidr1;
+    unsigned int   m_uidr2;
+    unsigned int   m_uidr3;
 };
 
 #endif // ENTERROOM_H

@@ -11,9 +11,11 @@
 {
     ui->setupUi(this);
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint |
-                         Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setAttribute(Qt::WA_TransparentForMouseEvents,false);
+
+    connect(this,SIGNAL(clicked()),this,SLOT(on_mouseclicked()));
 }
 
 EnterRoom::~EnterRoom()
@@ -45,6 +47,18 @@ void EnterRoom::mouseReleaseEvent(QMouseEvent *e)
    m_bMousePressed = false;
 }
 
+void EnterRoom::focusInEvent(QFocusEvent *event)
+{
+    qDebug(__FUNCTION__);
+    this->show();
+}
+
+void EnterRoom::focusOutEvent(QFocusEvent *event)
+{
+    qDebug(__FUNCTION__);
+    this->hide();
+}
+
 void EnterRoom::joinchannel(QMainWindow* pLastWnd,const QString& qsChannel,uint uid)
 {
     qDebug(__FUNCTION__);
@@ -58,12 +72,9 @@ void EnterRoom::leavechannel()
     qDebug(__FUNCTION__);
 }
 
-void EnterRoom::setChannelName(const QString& qsChannel,uint uid)
+void EnterRoom::setChannelName(const QString& qsChannelInfo)
 {
-    QString qsParam(qsChannel);
-    qsParam.append(" ");
-    qsParam.append(QString::number(uid));
-    ui->lbChannel->setText(qsParam);
+    ui->lbChannel->setText(qsChannelInfo);
 }
 
 void EnterRoom::setParam(const QString& qsParam)
@@ -92,4 +103,74 @@ void EnterRoom::on_rbMic_stateChanged(int arg1)
         CAgoraObject::getInstance()->MuteLocalAudio(FALSE);
     else if(arg1 == Qt::Checked)
         CAgoraObject::getInstance()->MuteLocalAudio(TRUE);
+}
+
+void EnterRoom::setAllRAtt(int nRCount)
+{
+    ui->lb_r1->setVisible(false);
+    ui->lb_r2->setVisible(false);
+    ui->lb_r3->setVisible(false);
+    ui->lb_count->setVisible(false);
+
+   if(nRCount >= 1) {
+        QString qsText;
+        qsText.sprintf("  uid:%u",m_uidr1);
+        ui->lb_r1->setText(qsText);
+        ui->lb_r1->setVisible(true);
+
+        QRect qrt = ui->lb_count->geometry();
+        QRect qrt1 = ui->lb_r1->geometry();
+        qrt.setTop(qrt1.bottom() + 10);
+        ui->lb_count->move(qrt.left(),qrt.top());
+        ui->lb_count->setVisible(true);
+
+   }
+   if(nRCount >= 2) {
+        QString qsText;
+        qsText.sprintf("  uid:%u",m_uidr2);
+        ui->lb_r2->setText(qsText);
+        ui->lb_r2->setVisible(true);
+
+        QRect qrt = ui->lb_count->geometry();
+        QRect qrt1 = ui->lb_r2->geometry();
+        qrt.setTop(qrt1.bottom() + 10);
+        ui->lb_count->move(qrt.left(),qrt.top());
+        ui->lb_count->setVisible(true);
+   }
+   if(nRCount >= 3) {
+       QString qsText;
+       qsText.sprintf("  uid:%u",m_uidr3);
+       ui->lb_r3->setText(qsText);
+       ui->lb_r3->setVisible(true);
+
+       QRect qrt = ui->lb_count->geometry();
+       QRect qrt1 = ui->lb_r3->geometry();
+       qrt.setTop(qrt1.bottom() + 10);
+       ui->lb_count->move(qrt.left(),qrt.top());
+       ui->lb_count->setVisible(true);
+   }
+
+    QString qsCount;
+    qsCount.sprintf("Total %d Person",nRCount + 1);
+    ui->lb_count->setText(qsCount);
+}
+
+void EnterRoom::setR1(uid_t uid)
+{
+    m_uidr1 = uid;
+}
+
+void EnterRoom::setR2(uid_t uid)
+{
+    m_uidr2 = uid;
+}
+
+void EnterRoom::setR3(uid_t uid)
+{
+    m_uidr3 = uid;
+}
+
+void EnterRoom::on_mouseclicked()
+{
+    qDebug(__FUNCTION__);
 }

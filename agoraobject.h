@@ -51,14 +51,15 @@ public:
 
 signals:
     void sender_videoStopped();
-    void sender_joinedChannelSuccess(const char* channel, uid_t uid, int elapsed);
-    void sender_userJoined(uid_t uid, int elapsed);
-    void sender_userOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason);
+    void sender_joinedChannelSuccess(const QString &qsChannel, unsigned int uid, int elapsed);
+    void sender_userJoined(unsigned int uid, int elapsed);
+    void sender_userOffline(unsigned int uid, USER_OFFLINE_REASON_TYPE reason);
     void sender_firstLocalVideoFrame(int width, int height, int elapsed);
-    void sender_firstRemoteVideoDecoded(uid_t uid, int width, int height, int elapsed);
-    void sender_firstRemoteVideoFrameDrawn(uid_t uid, int width, int height, int elapsed);
+    void sender_firstRemoteVideoDecoded(unsigned int uid, int width, int height, int elapsed);
+    void sender_firstRemoteVideoFrameDrawn(unsigned int uid, int width, int height, int elapsed);
     void sender_localVideoStats(const LocalVideoStats &stats);
     void sender_remoteVideoStats(const RemoteVideoStats &stats);
+    void sender_rtcStats(const RtcStats &stats);
 
 public:
     static CAgoraObject* getInstance(QObject *parent = 0);
