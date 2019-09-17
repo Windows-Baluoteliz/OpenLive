@@ -182,7 +182,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void MainWindow::receive_exitChannel()
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
     m_upIr->leavechannel();
     this->show();
 }

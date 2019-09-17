@@ -44,6 +44,11 @@ InRoom::InRoom(QWidget *parent) :
     ui->widget_r2->setWindowOpacity(1);
     ui->widget_r3->setWindowOpacity(1);
 
+    ui->widget_l->installEventFilter(this);
+    ui->widget_r1->installEventFilter(this);
+    ui->widget_r2->installEventFilter(this);
+    ui->widget_r3->installEventFilter(this);
+
     m_timer_fps = new QTimer(this);
     connect(m_timer_fps,SIGNAL(timeout()),this,SLOT(receive_timer_pfs()));
 }
@@ -144,6 +149,7 @@ void InRoom::receive_joinedChannelSuccess(const QString &qsChannel, unsigned int
     adjustPos();
 
     QString qsChannelInfo;
+    m_qsChannel = qsChannel;
     qsChannelInfo.sprintf("%s %u",qsChannel.toStdString().c_str(),uid);
     m_uper->setChannelName(qsChannelInfo);
     m_bigUid = uid;
@@ -253,39 +259,55 @@ void InRoom::adjustPos()
     int nIndex = 0;
     while(m_qivs.end() != it) {
         if(it->uid == m_uid) {
-            it->wid = ui->widget_l->winId();
-            CAgoraObject::getInstance()->LocalVideoPreview((HWND)(it->wid),
+            m_bigUid == m_uid;
+            it->pWidget = ui->widget_l;
+            it->nIndex = 0;
+            CAgoraObject::getInstance()->LocalVideoPreview((HWND)(it->pWidget->winId()),
                                                            TRUE,
                                                            (it->uid == m_bigUid) ? RENDER_MODE_FIT : RENDER_MODE_HIDDEN);
             ui->widget_l->setVisible(true);
+            ui->widget_l->setGeometry(0,0,1366,768);
+            ui->widget_l->lower();
+            QString qsChannelInfo;
+            qsChannelInfo.sprintf("%s %u",m_qsChannel.toStdString().c_str(),m_uid);
+            m_uper->setChannelName(qsChannelInfo);
         }
         else {
             nIndex++;
             if(nIndex == 1) {
-                it->wid = ui->widget_r1->winId();
+                it->pWidget = ui->widget_r1;
+                it->nIndex = 1;
                 CAgoraObject::getInstance()->RemoteVideoRender(it->uid,
-                                                               (HWND)(it->wid),
+                                                               (HWND)(it->pWidget->winId()),
                                                                 (it->uid == m_bigUid) ? RENDER_MODE_FIT:RENDER_MODE_HIDDEN);
                 m_uper->setR1(it->uid);
                 ui->widget_r1->setVisible(true);
+                ui->widget_r1->setGeometry(30,94,200,150);
+                ui->widget_r1->raise();
             }
 
             if(nIndex == 2) {
-                it->wid = ui->widget_r2->winId();
+                it->pWidget = ui->widget_r2;
+                it->nIndex = 2;
                 CAgoraObject::getInstance()->RemoteVideoRender(it->uid,
-                                                               (HWND)(it->wid),
+                                                               (HWND)(it->pWidget->winId()),
                                                                 (it->uid == m_bigUid) ? RENDER_MODE_FIT:RENDER_MODE_HIDDEN);
                 m_uper->setR2(it->uid);
                 ui->widget_r2->setVisible(true);
+                ui->widget_r2->setGeometry(30,254,200,150);
+                ui->widget_r2->raise();
             }
 
             if(nIndex == 3) {
-                it->wid = ui->widget_r3->winId();
+                it->pWidget = ui->widget_r3;
+                it->nIndex = 3;
                 CAgoraObject::getInstance()->RemoteVideoRender(it->uid,
-                                                               (HWND)(it->wid),
+                                                               (HWND)(it->pWidget->winId()),
                                                                 (it->uid == m_bigUid) ? RENDER_MODE_FIT:RENDER_MODE_HIDDEN);
                 m_uper->setR3(it->uid);
                 ui->widget_r3->setVisible(true);
+                ui->widget_r3->setGeometry(30,414,200,150);
+                ui->widget_r3->raise();
             }
         }
         it++;
@@ -297,4 +319,81 @@ void InRoom::adjustPos()
 void InRoom::mouseClicked()
 {
     qDebug(__FUNCTION__);
+}
+
+bool InRoom::eventFilter(QObject *watched,QEvent *event)
+{
+    bool bFind = false;
+    int nIndex = 0;
+    Video_Stats vsr,vsbig;
+    if(watched==ui->widget_r1 && event->type() == QEvent::MouseButtonDblClick) {
+        qDebug("DBClick r1");
+        std::lock_guard<std::mutex> autoLock(m_vsMutex);
+        uid_t uid = m_uper->getR1();
+        if(m_qivs.contains(uid) && m_qivs.contains(m_bigUid)) {
+            vsr = m_qivs[uid];
+            vsbig = m_qivs[m_bigUid];
+            bFind = ( vsr.uid == m_bigUid ) ? false : true;
+            nIndex = vsr.nIndex;
+        }
+    }
+    else if(watched == ui->widget_r2 && event->type() == QEvent::MouseButtonDblClick) {
+        qDebug("DBClick r2");
+        std::lock_guard<std::mutex> autoLock(m_vsMutex);
+        uid_t uid = m_uper->getR2();
+        if(m_qivs.contains(uid) && m_qivs.contains(m_bigUid)) {
+            vsr = m_qivs[uid];
+            vsbig = m_qivs[m_bigUid];
+			bFind = (vsr.uid == m_bigUid) ? false : true;
+            nIndex = vsr.nIndex;
+        }
+    }
+    else if(watched == ui->widget_r3 && event->type() == QEvent::MouseButtonDblClick) {
+        qDebug("DBClick r3");
+        std::lock_guard<std::mutex> autoLock(m_vsMutex);
+        uid_t uid = m_uper->getR3();
+        if(m_qivs.contains(uid) && m_qivs.contains(m_bigUid)) {
+            vsr = m_qivs[uid];
+            vsbig = m_qivs[m_bigUid];
+			bFind = (vsr.uid == m_bigUid) ? false : true;
+            nIndex = vsr.nIndex;
+        }
+    }
+
+    else if(watched == ui->widget_l && event->type() == QEvent::MouseButtonDblClick) {
+        qDebug("DBClick local");
+        std::lock_guard<std::mutex> autoLock(m_vsMutex);
+        uid_t uid = m_uid;
+        if(m_qivs.contains(uid) && m_qivs.contains(m_bigUid)) {
+            vsr = m_qivs[uid];
+            vsbig = m_qivs[m_bigUid];
+			bFind = (vsr.uid == m_bigUid) ? false : true;
+            nIndex = vsr.nIndex;
+        }
+    }
+
+    if(bFind) {
+        std::lock_guard<std::mutex> autolock(m_vsMutex);
+        QRect qrr,qrbig;
+        if(vsr.pWidget)
+            qrr = vsr.pWidget->geometry();
+        if(vsbig.pWidget)
+            qrbig = vsbig.pWidget->geometry();
+
+        vsr.pWidget->setGeometry(qrbig);
+        vsbig.pWidget->setGeometry(qrr);
+        vsr.pWidget->lower();
+        vsbig.pWidget->raise();
+        m_qivs[vsr.uid].nIndex = 0;
+        m_qivs[vsbig.uid].nIndex = nIndex;
+
+        QString qsSrc,qsDest;
+        qsSrc.sprintf("%s %u",m_qsChannel.toStdString().c_str(),vsr.uid);
+        qsDest.sprintf("  uid:%u",vsbig.uid);
+        m_uper->switchUidText(qsSrc,qsDest,nIndex);
+		
+		m_bigUid = vsr.uid;
+    }
+
+    return QWidget::eventFilter(watched,event);
 }

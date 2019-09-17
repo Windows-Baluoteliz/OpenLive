@@ -17,8 +17,8 @@ class InRoom;
 
 typedef struct eTagVideoStats {
     eTagVideoStats(){;}
-    eTagVideoStats(unsigned int ui,int nlastmiledelay = 0,int nwidth = 0,int nheight = 0,int nfps = 0,int nbitrate = 0,WId wiid = 0):
-        uid(ui),nLastmileDelay(nlastmiledelay),nWidth(nwidth),nHeight(nheight),nFps(nfps),nBitrate(nbitrate),wid(wiid){;}
+    eTagVideoStats(unsigned int ui,int nlastmiledelay = 0,int nwidth = 0,int nheight = 0,int nfps = 0,int nbitrate = 0,QWidget *pwidget = Q_NULLPTR,int nindex = 0):
+        uid(ui),nLastmileDelay(nlastmiledelay),nWidth(nwidth),nHeight(nheight),nFps(nfps),nBitrate(nbitrate),pWidget(pwidget),nIndex(nindex){;}
     eTagVideoStats(const eTagVideoStats& vss) {
         *this = vss;
     }
@@ -30,7 +30,8 @@ typedef struct eTagVideoStats {
             nHeight = vss.nHeight;
             nFps = vss.nFps;
             nBitrate = vss.nBitrate;
-            wid = vss.wid;
+            pWidget = vss.pWidget;
+            nIndex = vss.nIndex;
         }
 
         return *this;
@@ -42,9 +43,10 @@ typedef struct eTagVideoStats {
     int nHeight;
     int nFps;
     int nBitrate;
-    WId wid;
+    QWidget* pWidget;
+    int nIndex;
 }Video_Stats,*PVideo_Stats,*LPVideoStats;
-typedef QMap<int,Video_Stats> qIVS;
+typedef QMap<unsigned int,Video_Stats> qIVS;
 
 class InRoom : public QMainWindow
 {
@@ -82,6 +84,8 @@ public slots:
 
     void receive_timer_pfs();
 
+    bool eventFilter(QObject *watched,QEvent *event);
+
 private slots:
     void mouseClicked();
 
@@ -100,6 +104,7 @@ private:
     QTimer  *m_timer_fps;
     uid_t   m_uid;
     uid_t   m_bigUid;
+    QString m_qsChannel;
 };
 
 #endif // INROOM_H

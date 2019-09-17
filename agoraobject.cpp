@@ -20,7 +20,7 @@ public:
     }
     virtual void onUserJoined(uid_t uid, int elapsed) override
     {
-        qDebug("%s %u",__FUNCTION__,uid);
+        //qDebug("%s %u",__FUNCTION__,uid);
         emit m_pInstance.sender_userJoined(uid, elapsed);
     }
     virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) override

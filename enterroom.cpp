@@ -49,19 +49,19 @@ void EnterRoom::mouseReleaseEvent(QMouseEvent *e)
 
 void EnterRoom::focusInEvent(QFocusEvent *event)
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
     this->show();
 }
 
 void EnterRoom::focusOutEvent(QFocusEvent *event)
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
     this->hide();
 }
 
 void EnterRoom::joinchannel(QMainWindow* pLastWnd,const QString& qsChannel,uint uid)
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
     m_pLastWnd = pLastWnd;
     ui->lbChannel->setText(qsChannel);
     this->show();
@@ -69,7 +69,7 @@ void EnterRoom::joinchannel(QMainWindow* pLastWnd,const QString& qsChannel,uint 
 
 void EnterRoom::leavechannel()
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
 }
 
 void EnterRoom::setChannelName(const QString& qsChannelInfo)
@@ -80,6 +80,35 @@ void EnterRoom::setChannelName(const QString& qsChannelInfo)
 void EnterRoom::setParam(const QString& qsParam)
 {
     ui->lbParam->setText(qsParam);
+}
+
+int EnterRoom::getR1()
+{
+    return m_uidr1;
+}
+
+int EnterRoom::getR2()
+{
+    return m_uidr2;
+}
+
+int EnterRoom::getR3()
+{
+    return m_uidr3;
+}
+
+void EnterRoom::switchUidText(const QString &qsSrc,const QString &qsDest,int nIndex)
+{
+    QString qsInfo1;
+    qsInfo1.sprintf("%s,%s,%d",qsSrc.toStdString().c_str(),qsDest.toStdString().c_str(),nIndex);
+    //qDebug(qsInfo1.toStdString().c_str());
+    ui->lbChannel->setText(qsSrc);
+    if(1 == nIndex)
+        ui->lb_r1->setText(qsDest);
+    if(2 == nIndex)
+        ui->lb_r2->setText(qsDest);
+    if(3 == nIndex)
+        ui->lb_r3->setText(qsDest);
 }
 
 void EnterRoom::on_btnExit_clicked()
@@ -172,5 +201,5 @@ void EnterRoom::setR3(uid_t uid)
 
 void EnterRoom::on_mouseclicked()
 {
-    qDebug(__FUNCTION__);
+    //qDebug(__FUNCTION__);
 }

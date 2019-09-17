@@ -26,6 +26,11 @@ public:
     void setR1(unsigned int uid);
     void setR2(unsigned int uid);
     void setR3(unsigned int uid);
+    int getR1();
+    int getR2();
+    int getR3();
+
+    void switchUidText(const QString &qsSrc,const QString &qsDest,int nIndex);
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
