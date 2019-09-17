@@ -16,6 +16,7 @@ CAgoraConfig gAgoraConfig;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon("home.ico"));
 
     qRegisterMetaType<uid_t>();
     qRegisterMetaType<USER_OFFLINE_REASON_TYPE>();
